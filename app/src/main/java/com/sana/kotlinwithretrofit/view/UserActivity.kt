@@ -1,10 +1,10 @@
 package com.sana.kotlinwithretrofit
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -26,10 +26,9 @@ class UserActivity : AppCompatActivity() {
         init()
     }
 
-    @SuppressLint("WrongConstant")
-    fun init(){
-        recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+    private fun init(){
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         progerssProgressDialog = ProgressDialog(this)
         progerssProgressDialog.setTitle("Loading")
@@ -40,7 +39,7 @@ class UserActivity : AppCompatActivity() {
         try{
 
             fetchData()
-            userAdapter = UserListAdapter(this, userList)
+            userAdapter = UserListAdapter(this, userList, {user ->onItemClicked(user)})
             recyclerView.adapter = userAdapter;
 
         }catch (e:Exception){
@@ -67,5 +66,12 @@ class UserActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun onItemClicked(user: User){
+
+        var intent = Intent(this, UserDetailsActivity::class.java)
+        intent.putExtra("image",user.image)
+        startActivity(intent)
     }
 }
