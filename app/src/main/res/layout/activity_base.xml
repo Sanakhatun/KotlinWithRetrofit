@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark"
+    app:title="@string/app_name"
+    app:navigationIcon="@drawable/ic_action_back"
+    app:titleTextColor="@android:color/white"
+    app:menu="@menu/home_menu">
+
+    <!-- You can create your custom layout for toolbar if
+     you don't want to use menu -->
+
+    <!--<ImageView
+        android:id="@+id/iv_deleteItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_white" />-->
+
+</androidx.appcompat.widget.Toolbar>
