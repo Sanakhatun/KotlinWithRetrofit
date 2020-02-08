@@ -102,8 +102,8 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         if (view != null) {
             when (view.id){
                 R.id.fab_addItem ->{
-                    var dialog = AddItemDialog(this)
-                    dialog.show()
+//                    var dialog = AddItemDialog(this)
+//                    dialog.show()
 //                    dialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 }
             }
