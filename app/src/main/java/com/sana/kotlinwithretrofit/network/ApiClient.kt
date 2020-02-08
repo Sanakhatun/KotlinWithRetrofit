@@ -1,11 +1,10 @@
 package com.sana.kotlinwithretrofit
 
+import com.sana.kotlinwithretrofit.utilities.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-
-     var BASE_URL = "https://api.github.com/"
 
         fun create(): ApiInterface{
             val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
