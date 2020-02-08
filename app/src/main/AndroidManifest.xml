@@ -13,12 +13,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view.AddItemDialog"/>
         <activity android:name=".common.BaseActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".UserDetailsActivity" />
-        <activity android:name=".UserActivity" />
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UserDetailsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".UserActivity" android:screenOrientation="portrait"/>
         <activity
-            android:name=".SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
