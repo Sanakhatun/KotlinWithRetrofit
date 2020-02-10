@@ -1,5 +1,6 @@
 package com.sana.kotlinwithretrofit
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,11 +11,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.sana.kotlinwithretrofit.view.IDeleteItemCallback
+import java.util.ArrayList
 
-class UserListAdapter(var context: Context, var userList: ArrayList<User>) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>(), IDeleteItemCallback {
+class UserListAdapter(
+
+    val context: Context,
+    var userList: ArrayList<User>,
+    private val itemClickListener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
 
     var position: Int = 0
+
     /* Initialization */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         return UserViewHolder(
@@ -24,21 +30,23 @@ class UserListAdapter(var context: Context, var userList: ArrayList<User>) : Rec
 
     override fun getItemCount() = userList.size
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int){
-        holder.bindView(userList[position], position)
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        holder.bindView(userList[position], itemClickListener)
+
         this.position = position
     }
 
 
-    class UserViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView){
+    class UserViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindView(user: User, position: Int){
+        fun bindView(user: User, itemClickListener: (User) -> Unit) {
+
 
             val tv_userName = itemView.findViewById<TextView>(R.id.tv_userName)
             val tv_userType = itemView.findViewById<TextView>(R.id.tv_userType)
             val iv_avatar = itemView.findViewById<ImageView>(R.id.iv_avatar)
 
-            try{
+            try {
                 tv_userName.text = user.username
                 tv_userType.text = user.userType
 
@@ -46,14 +54,9 @@ class UserListAdapter(var context: Context, var userList: ArrayList<User>) : Rec
                     .apply(RequestOptions().centerCrop())
                     .into(iv_avatar)
 
-                itemView.setOnClickListener{
+                itemView.setOnClickListener { itemClickListener(user) }
 
-                    var intent = Intent(context, UserDetailsActivity::class.java)
-                    intent.putExtra("image",user.image)
-                    intent.putExtra("selectedPosition", position)
-                    context.startActivity(intent)
-                }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -71,7 +74,4 @@ class UserListAdapter(var context: Context, var userList: ArrayList<User>) : Rec
         notifyItemRangeChanged(position, userList.size)
     }
 
-    override fun deleteItem() {
-        removeItem(position)
-    }
 }

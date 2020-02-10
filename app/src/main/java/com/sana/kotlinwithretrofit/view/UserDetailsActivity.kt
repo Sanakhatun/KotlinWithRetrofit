@@ -1,19 +1,17 @@
 package com.sana.kotlinwithretrofit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sana.kotlinwithretrofit.common.BaseActivity
-import com.sana.kotlinwithretrofit.view.IDeleteItemCallback
 import java.lang.Exception
 
-class UserDetailsActivity : BaseActivity() {
+class UserDetailsActivity : BaseActivity(){
 
     lateinit var image: ImageView
-    //var iDeleteItemCallback: IDeleteItemCallback? = null
     var selectedPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +48,12 @@ class UserDetailsActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean{
         when (item.itemId){
             R.id.menu_delete ->{
-                //iDeleteItemCallback!!.deleteItem()
+
+                var intent = Intent(this, UserActivity::class.java)
+                intent.putExtra("position",selectedPosition)
+                setResult(1, intent)
                 finish()
+
                 return true
             }
         }

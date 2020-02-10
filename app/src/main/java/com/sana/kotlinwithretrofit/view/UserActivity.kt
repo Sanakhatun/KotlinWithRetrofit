@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.LinearLayout
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sana.kotlinwithretrofit.common.BaseActivity
+import com.sana.kotlinwithretrofit.utilities.Utilities
 import com.sana.kotlinwithretrofit.view.AddItemDialog
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,6 +32,7 @@ class UserActivity : BaseActivity(), View.OnClickListener {
     lateinit var userAdapter: UserListAdapter
     lateinit var progerssProgressDialog: ProgressDialog
     var userList = ArrayList<User>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +60,7 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         try {
 
             fetchData()
-            userAdapter = UserListAdapter(this@UserActivity, userList)
+            userAdapter = UserListAdapter(this, userList, {user ->onItemClicked(user)})
             recyclerView.adapter = userAdapter;
 
         } catch (e: Exception) {
@@ -77,7 +80,7 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         call.enqueue(object : Callback<List<User>> {
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
                 progerssProgressDialog.dismiss()
-                showAlert(getString(R.string.check_internet_connection))
+                Utilities.showAlert(this@UserActivity, getString(R.string.check_internet_connection))
             }
 
             override fun onResponse(call: Call<List<User>>?, response: Response<List<User>>?) {
@@ -94,6 +97,32 @@ class UserActivity : BaseActivity(), View.OnClickListener {
             }
         })
     }
+
+
+    private fun onItemClicked(user: User){
+
+        var intent = Intent(this, UserDetailsActivity::class.java)
+        intent.putExtra("image",user.image)
+        intent.putExtra("position", "")
+        startActivityForResult(intent, 100)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode.equals(1)){
+            try{
+                if(data != null){
+                    var pos = data.getIntExtra("position",0)
+                    userAdapter.removeItem(pos)
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -118,23 +147,5 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun showAlert(message: String) {
-        var dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.layout_custom_dialog)
-        val body = dialog.findViewById<TextView>(R.id.tv_message)
-        body.text = message
-        val btn_ok = dialog.findViewById<Button>(R.id.btn_ok)
-        btn_ok.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-        dialog.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-    }
 }
 
