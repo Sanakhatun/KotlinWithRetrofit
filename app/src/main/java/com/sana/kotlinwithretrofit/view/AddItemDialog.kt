@@ -5,8 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -36,7 +34,8 @@ class AddItemDialog(context: Context) : Dialog(context){
         btn_add.setOnClickListener(View.OnClickListener {
             dismiss()
             if(iAddItemCallback != null){
-                iAddItemCallback!!.addItem(User(et_name.text.toString(),et_userType.text.toString(),""))
+                iAddItemCallback!!.addItem(User(et_name.text.toString(),et_userType.text.toString(),"https://avatars2.githubusercontent.com/u/32?v=4"))
+                Toast.makeText(context, R.string.user_added, Toast.LENGTH_LONG).show()
             }
         })
     }

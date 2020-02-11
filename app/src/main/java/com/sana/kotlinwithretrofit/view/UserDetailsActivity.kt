@@ -7,12 +7,14 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sana.kotlinwithretrofit.common.BaseActivity
+import com.sana.kotlinwithretrofit.utilities.Constants.RESULT_CODE
 import java.lang.Exception
 
 class UserDetailsActivity : BaseActivity(){
 
     lateinit var image: ImageView
-    var selectedPosition: Int = 0
+    var userType: String = ""
+    var userName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +31,13 @@ class UserDetailsActivity : BaseActivity(){
             var intent = getIntent()
 
             if(intent != null){
-                if(intent.hasExtra("selectedPosition")){
-                    selectedPosition = intent.getIntExtra("selectedPosition", 0)
+
+                if(intent.hasExtra("username")){
+                    userName = intent.getStringExtra("username")
+                }
+
+                if(intent.hasExtra("userType")){
+                    userType = intent.getStringExtra("userType")
                 }
 
                 if(intent.hasExtra("image") && !intent.getStringExtra("image").equals("")){
@@ -43,6 +50,9 @@ class UserDetailsActivity : BaseActivity(){
         }catch (e: Exception){
             e.printStackTrace()
         }
+
+        toolbar!!.setTitle(userName)
+        toolbar!!.setSubtitle(userType)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean{
@@ -50,8 +60,7 @@ class UserDetailsActivity : BaseActivity(){
             R.id.menu_delete ->{
 
                 var intent = Intent(this, UserActivity::class.java)
-                intent.putExtra("position",selectedPosition)
-                setResult(1, intent)
+                setResult(RESULT_CODE, intent)
                 finish()
 
                 return true
@@ -65,4 +74,5 @@ class UserDetailsActivity : BaseActivity(){
         onBackPressed()
         return true
     }
+
 }

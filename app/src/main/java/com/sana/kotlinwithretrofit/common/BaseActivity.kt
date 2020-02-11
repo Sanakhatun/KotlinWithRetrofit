@@ -9,7 +9,7 @@ import com.sana.kotlinwithretrofit.R
 
 open class BaseActivity : AppCompatActivity() {
 
-    private var toolbar: Toolbar? = null
+    var toolbar: Toolbar? = null
     private var tv_title: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,6 +8,7 @@
     app:title="@string/app_name"
     app:navigationIcon="@drawable/ic_action_back"
     app:titleTextColor="@android:color/white"
+    app:subtitleTextColor="@android:color/white"
     app:menu="@menu/home_menu">
 
     <!-- You can create your custom layout for toolbar if

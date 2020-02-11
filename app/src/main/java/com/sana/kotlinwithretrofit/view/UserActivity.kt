@@ -1,38 +1,31 @@
 package com.sana.kotlinwithretrofit
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputFilter
-import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.sana.kotlinwithretrofit.common.BaseActivity
+import com.sana.kotlinwithretrofit.utilities.Constants.REQUEST_CODE
+import com.sana.kotlinwithretrofit.utilities.Constants.RESULT_CODE
 import com.sana.kotlinwithretrofit.utilities.Utilities
 import com.sana.kotlinwithretrofit.view.AddItemDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
-import kotlinx.android.synthetic.main.activity_base.toolbar
 
 
-class UserActivity : BaseActivity(), View.OnClickListener {
-
+class UserActivity : BaseActivity(), View.OnClickListener{
     lateinit var fab_addItem: FloatingActionButton
     lateinit var recyclerView: RecyclerView
     lateinit var userAdapter: UserListAdapter
     lateinit var progerssProgressDialog: ProgressDialog
     var userList = ArrayList<User>()
-
+    var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +35,7 @@ class UserActivity : BaseActivity(), View.OnClickListener {
 
     private fun initialise() {
         super.init()
-        toolbar.setTitle("User")
+        toolbar?.setTitle("User")
 
         /* To hide navigationIcon */
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
@@ -60,7 +53,7 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         try {
 
             fetchData()
-            userAdapter = UserListAdapter(this, userList, {user ->onItemClicked(user)})
+            userAdapter = UserListAdapter(this, userList, {user,position -> onItemClicked(user,position)})
             recyclerView.adapter = userAdapter;
 
         } catch (e: Exception) {
@@ -98,31 +91,29 @@ class UserActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
+    private fun onItemClicked(user: User, position: Int){
 
-    private fun onItemClicked(user: User){
-
+        this.position = position
         var intent = Intent(this, UserDetailsActivity::class.java)
+        intent.putExtra("username",user.username)
+        intent.putExtra("userType",user.userType)
         intent.putExtra("image",user.image)
-        intent.putExtra("position", "")
-        startActivityForResult(intent, 100)
+        startActivityForResult(intent, REQUEST_CODE)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode.equals(1)){
+        if(resultCode.equals(RESULT_CODE)){
             try{
-                if(data != null){
-                    var pos = data.getIntExtra("position",0)
-                    userAdapter.removeItem(pos)
-                }
+                userAdapter.removeItem(position)
+                Toast.makeText(this, R.string.user_deleted, Toast.LENGTH_LONG).show()
+
             }catch (e: Exception){
                 e.printStackTrace()
             }
         }
     }
-
 
     override fun onClick(view: View?) {
         if (view != null) {
@@ -146,6 +137,5 @@ class UserActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
-
 }
 

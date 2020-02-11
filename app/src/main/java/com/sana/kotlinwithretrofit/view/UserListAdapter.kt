@@ -1,8 +1,6 @@
 package com.sana.kotlinwithretrofit
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +15,8 @@ class UserListAdapter(
 
     val context: Context,
     var userList: ArrayList<User>,
-    private val itemClickListener: (User) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>() {
+    private val itemClickListener: (User, position: Int) -> Unit) : RecyclerView.Adapter<UserListAdapter.UserViewHolder>()
+    {
 
     var position: Int = 0
 
@@ -31,15 +30,14 @@ class UserListAdapter(
     override fun getItemCount() = userList.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        holder.bindView(userList[position], itemClickListener)
-
+        holder.bindView(userList[position], position, itemClickListener)
         this.position = position
-    }
 
+    }
 
     class UserViewHolder(val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bindView(user: User, itemClickListener: (User) -> Unit) {
+        fun bindView(user: User, selectedPosition: Int, itemClickListener: (User, pos: Int) -> Unit) {
 
 
             val tv_userName = itemView.findViewById<TextView>(R.id.tv_userName)
@@ -54,7 +52,7 @@ class UserListAdapter(
                     .apply(RequestOptions().centerCrop())
                     .into(iv_avatar)
 
-                itemView.setOnClickListener { itemClickListener(user) }
+                itemView.setOnClickListener { itemClickListener(user, selectedPosition) }
 
             } catch (e: Exception) {
                 e.printStackTrace()
