@@ -1,8 +1,8 @@
 # KotlinWithRetrofit
 # RecyclerView, Retrofit &amp; Glide with Kotlin
 
-In this Kotlin Tutorial, I have covered various topics such as Material Design, Integration of third party libraries such as: Retrofit, Gson 
-Glide and RecyclerView. In this app, data has been fetched and parse using Retrofit library and image was loaded using Glide library. 
+In this Kotlin Tutorial, I have covered various topics such as **Material Design, Integration of third party libraries such as: Retrofit, Gson 
+Glide and RecyclerView.** In this app, data has been fetched and parse using Retrofit library and image was loaded using Glide library. 
 Using RecyclerView, listItems are added and removed from the displayed list.
 
 **Retrieveing data from Retrofit**
