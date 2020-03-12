@@ -3,24 +3,34 @@ package com.sana.kotlinwithretrofit
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sana.kotlinwithretrofit.common.BaseActivity
 import com.sana.kotlinwithretrofit.utilities.Constants.RESULT_CODE
 import java.lang.Exception
+import com.sana.kotlinwithretrofit.common.ScaleListener
+
+
 
 class UserDetailsActivity : BaseActivity(){
 
     lateinit var image: ImageView
     var userType: String = ""
     var userName: String = ""
+    private var mScaleGestureDetector: ScaleGestureDetector? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
 
         initialise()
+
+        /* Pinch To Zoom Image */
+        mScaleGestureDetector = ScaleGestureDetector(this, ScaleListener(image))
+
     }
 
     private fun initialise(){
@@ -72,6 +82,11 @@ class UserDetailsActivity : BaseActivity(){
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        return true
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        mScaleGestureDetector!!.onTouchEvent(event)
         return true
     }
 
